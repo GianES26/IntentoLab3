@@ -1,0 +1,19 @@
+<!-- templates/fragments/navbar.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head></head>
+<body>
+<div th:fragment="menu">
+  <h1>Por: Gianfranco Enriquez Soel - 20224926</h1>
+  <h1>Por: Nassim Hamed Ramirez Valenzuela - 20193265</h1>
+  <nav>
+    <ul style="list-style: none; display: flex; gap: 20px;">
+      <li><a th:href="@{/employee}">Empleados</a></li>
+      <li><a th:href="@{/history}">Historial</a></li>
+      <li><a th:href="@{/reportes}">Reportes</a></li>
+    </ul>
+    <hr/>
+  </nav>
+</div>
+</body>
+</html>
