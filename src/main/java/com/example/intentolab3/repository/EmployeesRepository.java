@@ -5,7 +5,9 @@ import com.example.intentolab3.dto.GerenteConExperienciaDto;
 import com.example.intentolab3.dto.MayorTresEmpleadosDto;
 import com.example.intentolab3.entity.Employees;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -69,6 +71,12 @@ public interface EmployeesRepository extends JpaRepository<Employees, Integer> {
     List<Employees> findByDepartment_DepartmentNameAndFirstNameContainingIgnoreCase(String search1, String search2);
 
     List<Employees> findByDepartment_DepartmentNameContainingIgnoreCaseOrFirstNameContainingIgnoreCase(String search1, String search2);
+
+    @Transactional
+    @Modifying
+    @Query(value = "UPDATE employees SET location_id = ?1 WHERE employee_id = ?2", nativeQuery = true)
+    void actualizarLocationEmpleado(int locationId, int employeeId);
+
 
 
 }

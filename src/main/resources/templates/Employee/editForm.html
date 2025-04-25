@@ -1,69 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title th:text="${empleado.id != null} ? 'Editar Empleado' : 'Crear Empleado'">Formulario Empleado</title>
+  <title>Editar Ubicación</title>
 </head>
 <body>
-
 
 <!-- Incluye el menú -->
 <div th:replace="fragments/navbar :: menu"></div>
 
+<h1>Editar Ciudad y Código Postal</h1>
 
-<h1 th:text="${empleado.id != null} ? 'Editar Empleado' : 'Crear Empleado'"></h1>
+<form method="post" th:action="@{/employee/actualizarUbicacion}">
+  <input type="hidden" name="locationId" th:value="${empleado.department.location.id}"/>
 
-<form th:action="@{/employee/guardar}" th:object="${empleado}" method="post">
+  <label>ID:</label>
+  <input type="text" th:value="${empleado.id}" disabled/><br/>
 
-  <input type="hidden" th:field="*{id}" />
-
-  <!-- Nombre -->
   <label>Nombre:</label>
-  <input type="text" th:field="*{firstName}" required/><br/>
+  <input type="text" th:value="${empleado.firstName}" disabled/><br/>
 
-  <!-- Apellido -->
   <label>Apellido:</label>
-  <input type="text" th:field="*{lastName}" required/><br/>
+  <input type="text" th:value="${empleado.lastName}" disabled/><br/>
 
-  <!-- Email -->
-  <label>Email:</label>
-  <input type="text" th:field="*{email}" required/><br/>
-
-  <!-- Teléfono -->
-  <label>Teléfono:</label>
-  <input type="text" th:field="*{phoneNumber}" /><br/>
-
-  <!-- Puesto -->
   <label>Puesto:</label>
-  <select th:field="*{job}" required>
-    <option value="" disabled selected>Seleccionar puesto</option>
-    <option th:each="j : ${jobs}" th:value="${j.id}" th:text="${j.jobTitle}">
-      <!--th:selected="${j.id == empleado.job?.id}"--></option>
-  </select><br/>
+  <input type="text" th:value="${empleado.job.jobTitle}" disabled/><br/>
 
-  <!-- Salario -->
-  <label>Salario:</label>
-  <input type="number" step="0.01" th:field="*{salary}" /><br/>
-
-  <!-- Comisión -->
-  <label>Comisión (%):</label>
-  <input type="number" step="0.01" th:field="*{commissionPct}" /><br/>
-
-  <!-- Department -->
   <label>Departamento:</label>
-  <select th:field="*{department}">
-    <option th:each="dep : ${departments}" th:value="${dep.id}" th:text="${dep.departmentName}"></option>
-  </select>
+  <input type="text" th:value="${empleado.department.departmentName}" disabled/><br/>
 
-  <!-- Manager -->
-  <label>Manager:</label>
-  <select th:field="*{manager}">
-    <option value="">-- Sin manager --</option>
-    <option th:each="man : ${managers}" th:value="${man.id}" th:text="${man.firstName + ' ' + man.lastName}"></option>
-  </select>
+  <label>Salario (en dólares):</label>
+  <input type="text" th:value="${empleado.salary}" disabled/><br/>
 
-  <!-- Botón -->
-  <button type="submit">Guardar</button>
+  <label>Ciudad:</label>
+  <input type="text" name="city" th:value="${empleado.department.location.city}" required/><br/>
 
+  <label>Código Postal:</label>
+  <input type="text" name="postalCode" th:value="${empleado.department.location.postalCode}" required/><br/>
+
+  <button type="submit">Guardar Cambios</button>
+  <a th:href="@{/employee}">Cancelar</a>
 </form>
 
 </body>

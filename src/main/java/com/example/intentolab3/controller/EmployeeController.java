@@ -4,6 +4,7 @@ import com.example.intentolab3.entity.Employees;
 import com.example.intentolab3.repository.DepartmentsRepository;
 import com.example.intentolab3.repository.EmployeesRepository;
 import com.example.intentolab3.repository.JobsRepository;
+import com.example.intentolab3.repository.LocationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,9 @@ public class EmployeeController {
     @Autowired
     private DepartmentsRepository departmentsRepository;
 
+    @Autowired
+    private LocationsRepository locationsRepository;
+
     @GetMapping("")
     public String listarEmpleados(Model model) {
         List<Employees> empleados = employeesRepository.findAll();
@@ -48,6 +52,44 @@ public class EmployeeController {
 
         return "Employee/list";
     }
+
+    /*
+    @GetMapping("/editar")
+    public String editarEmpleado(@RequestParam("id") Integer id, Model model) {
+        Optional<Employees> empleadoOpt = employeesRepository.findById(id);
+        if (empleadoOpt.isPresent()) {
+            Employees empleado = empleadoOpt.get();
+            model.addAttribute("empleado", empleado);
+
+            // Estandarizado
+            model.addAttribute("jobs", jobsRepository.findAll());
+            model.addAttribute("departments", departmentsRepository.findAll());
+            model.addAttribute("managers", departmentsRepository.findDistinctManagers());
+
+            return "Employee/editForm";
+        } else {
+            return "redirect:/employee";
+        }
+    }
+    */
+
+
+    @GetMapping("/editar")
+    public String mostrarFormularioUbicacion(@RequestParam("id") Integer id, Model model) {
+        Employees empleado = employeesRepository.findById(id).orElseThrow();
+        model.addAttribute("empleado", empleado);
+        return "Employee/editForm";
+    }
+
+    @PostMapping("/actualizarUbicacion")
+    public String actualizarUbicacion(
+            @RequestParam("postalCode") String postalCode,
+            @RequestParam("city") String city,
+            @RequestParam("locationId") int locationId) {
+        locationsRepository.actualizarLocationEmpleado(postalCode, city, locationId);
+        return "redirect:/employee";
+    }
+
 
 
     /*
