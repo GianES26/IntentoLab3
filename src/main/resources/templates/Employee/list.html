@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Empleados</title>
+</head>
+<body>
+
+
+<!-- Incluye el menú -->
+<div th:replace="fragments/navbar :: menu"></div>
+
+<h1>Lista de Empleados</h1>
+<h2>Para usar la busqueda, escriba lo que desea encontrar por nombre, apellido, puesto o departamento y
+    pulse Enter, si desea eliminar los filtros no escriba nada y pulse Enter</h2>
+
+<!--
+<form method="post" th:action="@{/employee/buscar}">
+    <input type="text" class="form-control mb-3" name="searchField" placeholder="Buscar por nombre y departamento"/>
+</form>
+-->
+<!--
+<form method="post" th:action="@{/employee/buscar}">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="searchField" placeholder="Buscar por nombre y departamento"/>
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            <button type="reset" class="btn btn-secondary">Limpiar</button>
+        </div>
+    </div>
+</form>
+-->
+<form method="post" th:action="@{/employee/buscar}">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="searchField" placeholder="Buscar por nombre y departamento"/>
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            <!-- Botón Limpiar, que redirige a la lista original sin parámetros de búsqueda -->
+            <a href="#" th:href="@{/employee}" class="btn btn-secondary">Limpiar</a>
+        </div>
+    </div>
+</form>
+
+
+<a th:href="@{/employee/nuevo}">Crear nuevo empleado</a>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Puesto</th>
+        <th>Departamento</th>
+        <th>Ciudad</th>
+        <th>Codigo postal</th>
+        <th>Salario (en dolares)</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="e : ${listaEmpleados}">
+        <td th:text="${e.id}"></td>
+        <td th:text="${e.firstName}"></td>
+        <td th:text="${e.lastName}"></td>
+        <td th:text="${e.job.jobTitle}"></td>
+        <td th:text="${e.department.departmentName}"></td>
+        <td th:text="${e.department.location.city}"></td>
+        <td th:text="${e.department.location.postalCode}"></td>
+        <td th:text="${e.salary}"></td>
+        <td>
+            <a th:href="@{/employee/editar(id=${e.id})}">Editar</a> |
+            <a th:href="@{/employee/borrar(id=${e.id})}" onclick="return confirm('¿Estás seguro de eliminar?')">Eliminar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
